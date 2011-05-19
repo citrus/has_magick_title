@@ -39,11 +39,13 @@ module HasMagickTitle
       
       def refresh_magick_title
         
-        unless has_magick_title?
+        if !has_magick_title?
           image = MagickTitle::Image.create(magick_title_text, magick_title_options)
           create_image_title(image.identify.merge(:filename => image.filename))
+        elsif send("#{magick_title_options[:attribute]}.changed?")
+          puts "TITLE CHANGED"
         else
-        
+          puts "NO CHANGE"
         end
         #image = MagickTitle::Image.create(magick_title_text, magick_title_options)
         #update(image.identify)
