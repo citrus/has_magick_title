@@ -3,7 +3,6 @@ require 'magick_title/extension'
 require 'has_magick_title/image_title'
 require 'has_magick_title/view_helper'
 
-
 module HasMagickTitle
 
   module Base
@@ -55,7 +54,6 @@ module HasMagickTitle
   end
   
 end
-
 
 ActiveRecord::Base.send(:include, HasMagickTitle::Base)
 ActionView::Helpers.send(:include, HasMagickTitle::ViewHelper)

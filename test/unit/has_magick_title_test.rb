@@ -1,7 +1,5 @@
 require_relative '../test_helper'
 
-
-
 class HasMagickTitleTest < Test::Unit::TestCase
 
   def setup
@@ -34,18 +32,36 @@ class HasMagickTitleTest < Test::Unit::TestCase
       assert @post.valid?
       assert @post.save
       assert_not_nil @post.image_title
-      
-      path = File.join(Rails.root, "public", @post.image_title.url)
-      puts path
+      path = @post.image_title.full_path
       assert File.exists?(path), "#{path} should exist"
+    end
+
+    context "with an existing post" do
       
+      setup do
+        @post = Post.create(:title => "Hello McPosty")
+      end
+         
+      should "delete old image when changed and create a new one" do
+        path = @post.image_title.full_path
+        
+        assert File.exists?(path)
+        
+        @post.title = "Another title!"
+        @post.save
+        
+        assert !File.exists?(path), "#{path} shouldn't exist"
+        
+        new_path = @post.image_title.full_path
+        
+        assert_not_equal path, new_path
+        
+        assert File.exists?(new_path), "#{new_path} shouldn exist"
+        
+      end
+    
     end
     
   end
-  
-  
-  #should "have has_magick_title in singleton_methods" do
-  #  assert Post.singleton_methods.include?(:has_magick_title)
-  #end  
     
 end
