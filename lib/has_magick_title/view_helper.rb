@@ -1,6 +1,6 @@
 module HasMagickTitle
 
-  module Helper
+  module ViewHelper
   
     def magick_title_for(record, options={})
       record.refresh_magick_title unless record.has_image_title? 
