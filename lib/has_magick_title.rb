@@ -1,4 +1,7 @@
 require 'magick_title'
+require 'magick_title/extension'
+require 'has_magick_title/image_title'
+
 
 module HasMagickTitle
 
@@ -13,26 +16,44 @@ module HasMagickTitle
       def has_magick_title(options={})
         include InstanceMethods
         
-        #self.set_options(HasImageTitle.default_options.merge(options))
+        cattr_accessor :magick_title_options
+        self.magick_title_options = MagickTitle.options.merge(options)
         
-        puts options.inspect
-        
-        has_one :image_title, :as => :imagable, :dependent => :destroy
-        
-        after_save :refresh_magick_title
-        
+        has_one :image_title, :as => :imagable, :autosave => true, :dependent => :destroy
+        before_save :refresh_magick_title
+                
       end
     
     end
     
     module InstanceMethods
     
-      def has_image_title?
-        self.image_title != nil
+      def has_magick_title?
+        !image_title.nil?
+      end
+      alias :has_image_title? :has_magick_title?
+    
+      def magick_title_text
+        send magick_title_options[:attribute]
       end
       
       def refresh_magick_title
         
+        unless has_magick_title?
+          image = MagickTitle::Image.create(magick_title_text, magick_title_options)
+          create_image_title(image.identify.merge(:filename => image.filename))
+        else
+        
+        end
+        #image = MagickTitle::Image.create(magick_title_text, magick_title_options)
+        #update(image.identify)
+      
+      
+        #create_image_title(:title => )
+        #  image_title.update_attributes(attrs)
+        #else
+        #  image_title = 
+        #end                
       end
         
     end
@@ -42,8 +63,9 @@ module HasMagickTitle
   module Helper
   
     def magick_title_for(record, options={})
-      puts record.inspect
-      MagickTitle.say(record.title).to_html.html_safe
+      record.refresh_magick_title unless record.has_image_title? 
+      return "[magick_title error]" unless record.has_image_title?
+      image_tag record.image_title.url, :alt => record.magick_title_text, :title => record.magick_title_text, :class => record.magick_title_text
     end
   
   end
