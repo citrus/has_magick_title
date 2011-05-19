@@ -1,36 +1,55 @@
+require 'magick_title'
+
 module HasMagickTitle
 
-  def self.included(base)
-    base.extend(ClassMethods)
-  end
+  module Base
   
-  module ClassMethods
+    def self.included(base)
+      base.extend(ClassMethods)
+    end
     
-    def has_magick_title(options={})
-      include InstanceMethods
+    module ClassMethods
       
-      #self.set_options(HasImageTitle.default_options.merge(options))
+      def has_magick_title(options={})
+        include InstanceMethods
+        
+        #self.set_options(HasImageTitle.default_options.merge(options))
+        
+        puts options.inspect
+        
+        has_one :image_title, :as => :imagable, :dependent => :destroy
+        
+        after_save :refresh_magick_title
+        
+      end
+    
+    end
+    
+    module InstanceMethods
+    
+      def has_image_title?
+        self.image_title != nil
+      end
       
-      puts options.inspect
-      
-      has_one :image_title, :as => :imagable, :dependent => :destroy
-      
-      after_save :refresh_magick_title
-      
+      def refresh_magick_title
+        
+      end
+        
     end
   
   end
   
-  module InstanceMethods
+  module Helper
   
-    def has_image_title?
-      self.image_title != nil
+    def magick_title_for(record, options={})
+      puts record.inspect
+      MagickTitle.say(record.title).to_html.html_safe
     end
-    
-    def refresh_magick_title
-      
-    end
-      
+  
   end
-    
+     
 end
+
+
+ActiveRecord::Base.send(:include, HasMagickTitle::Base)
+ActionView::Helpers.send(:include, HasMagickTitle::Helper)

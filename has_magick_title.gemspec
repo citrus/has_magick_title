@@ -19,7 +19,10 @@ Gem::Specification.new do |s|
   s.executables   = `git ls-files -- bin/*`.split("\n").map{ |f| File.basename(f) }
   s.require_paths = ["lib"]
   
-  s.add_development_dependency 'rails', '>= 3.0.0'
+  s.add_dependency 'magick_title', '>= 0.1.8'
+  
+  s.add_development_dependency 'rails',   '>= 3.0.0'
+  s.add_development_dependency 'sqlite3', '>= 1.3.3'
   s.add_development_dependency 'shoulda', '2.11.3'
   s.add_development_dependency 'dummier', '0.1.0.rc1'
   
