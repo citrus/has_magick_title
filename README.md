@@ -43,7 +43,7 @@ To automagically generate your model's title attribute into an image, just call 
     end
 
 
-See [magick_title](https://github.com/citrus/magick_title) for more...
+### See [magick_title](https://github.com/citrus/magick_title) for more...
 
 
 Testing

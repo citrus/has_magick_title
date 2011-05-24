@@ -51,16 +51,13 @@ module HasMagickTitle
         send magick_title_options[:attribute]
       end
       
-      def refresh_magick_title
-        
+      def refresh_magick_title(opts={})
         self.image_title = build_image_title unless has_magick_title?
-        
-        if image_title.new_record? || send("#{magick_title_options[:attribute]}_changed?")
+        if opts[:force] || (image_title.new_record? || send("#{magick_title_options[:attribute]}_changed?"))
           image_title.send(:delete_magick_title)
           image = MagickTitle::Image.create(magick_title_text, magick_title_options)
           image_title.update_attributes(image.identify.merge(:filename => image.filename))
-        end
-                       
+        end                       
       end
         
     end

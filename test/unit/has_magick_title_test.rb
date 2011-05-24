@@ -46,6 +46,24 @@ class HasMagickTitleTest < Test::Unit::TestCase
         new_path = @post.image_title.full_path 
         assert_equal @path, new_path
       end
+      
+      should "refresh if force option is given" do
+        path = @post.image_title.full_path
+        timestamp = File.new(path).mtime
+        # allow for a time change
+        sleep 1
+        @post.send(:refresh_magick_title, :force => true)        
+        assert timestamp < File.new(path).mtime
+      end
+      
+      should "not refresh if force option is absent" do
+        path = @post.image_title.full_path
+        timestamp = File.new(path).mtime
+        # allow for a time change
+        sleep 1
+        @post.send(:refresh_magick_title)
+        assert_equal timestamp, File.new(path).mtime
+      end
        
       should "delete the old image when changed and create a new one" do
         @post.title = "Another title!"
