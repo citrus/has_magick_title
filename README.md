@@ -1,8 +1,47 @@
 Has Magick Title
 ================
+ 
+Installation
+------------
+
+Since has_magick_title is to be used with rails, we'll install it by adding the following to your Gemfile and running the `bundle` command.
+
+    gem 'has_magick_title', :git => 'git://github.com/citrus/has_magick_title.git'
+    
+Now bundle up:
+
+    bundle
 
 
-** brand new! **
+Usage
+-----
+
+To automagically generate your model's title attribute into an image, just call the `has_magick_title` class method.
+
+    # assume the defaults (:attribute => :title)
+    class Post < ActiveRecord::Base
+      
+      has_magick_title
+      
+    end
+    
+
+    # custom attribute and magick_title options
+    class Person < ActiveRecord::Base
+      
+      has_magick_title :name,
+        :color => "#e00053", 
+        :font_size => 19
+
+    end
+
+
+Testing
+-------
+
+Testing for has_magick_title is done with [shoulda](https://github.com/thoughtbot/shoulda), [spork](https://github.com/timcharper/spork) and [dummier](https://github.com/citrus/dummier).
+
+
 
 
 License

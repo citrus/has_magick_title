@@ -21,12 +21,9 @@ class HasMagickTitleTest < Test::Unit::TestCase
     end 
     
     should "have proper instance methods" do
-      assert @post.respond_to?(:image_title)
-      assert @post.respond_to?(:image_title=)
-      assert @post.respond_to?(:has_image_title?)
-      assert @post.respond_to?(:has_magick_title?)
-      assert @post.respond_to?(:refresh_magick_title)
-      assert @post.respond_to?(:magick_title_options)
+      [:image_title, :image_title=, :has_image_title?, :has_magick_title?, :refresh_magick_title, :magick_title_options ].each do |method|    
+        assert @post.respond_to?(method)
+      end
     end
     
     should "create an image upon save" do
@@ -56,7 +53,7 @@ class HasMagickTitleTest < Test::Unit::TestCase
         assert !File.exists?(@path), "#{@path} shouldn't exist"
         new_path = @post.image_title.full_path
         assert_not_equal @path, new_path
-        assert File.exists?(new_path), "#{new_path} shouldn exist"
+        assert File.exists?(new_path), "#{new_path} should exist"
       end
 
       should "delete the image with the record" do

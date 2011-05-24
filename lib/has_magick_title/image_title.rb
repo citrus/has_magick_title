@@ -14,10 +14,12 @@ class ImageTitle < ActiveRecord::Base
   def full_path
     File.join(Rails.root, "public", url)
   end
+  
+  private
    
-  def delete_magick_title
-    return if new_record? || !File.exists?(full_path)
-    FileUtils.rm(full_path)
-  end
+    def delete_magick_title
+      return if new_record? || filename.nil? || !File.exists?(full_path)
+      FileUtils.rm(full_path)
+    end
     
 end

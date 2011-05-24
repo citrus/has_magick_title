@@ -13,12 +13,21 @@ module HasMagickTitle
     
     module ClassMethods
       
-      def has_magick_title(options={})
+      def has_magick_title(attribute=:title, options={})
         include InstanceMethods
         
         cattr_accessor :magick_title_options
-        self.magick_title_options = MagickTitle.options.merge(options)
         
+        if options.is_a? Symbol
+          self.magick_title_options = MagickTitle.styles[options]
+        elsif options.is_a? Hash      
+          self.magick_title_options = MagickTitle.options.merge(options)
+        else 
+          raise ArgumentError, "has_magick_title options must be a Symbol or Hash"
+        end
+        
+        self.magick_title_options.merge!(:attribute => attribute)
+            
         has_one :image_title, :as => :imagable, :autosave => true, :dependent => :destroy
         before_save :refresh_magick_title
                 
@@ -42,7 +51,7 @@ module HasMagickTitle
         self.image_title = build_image_title unless has_magick_title?
         
         if image_title.new_record? || send("#{magick_title_options[:attribute]}_changed?")
-          image_title.delete_magick_title
+          image_title.send(:delete_magick_title)
           image = MagickTitle::Image.create(magick_title_text, magick_title_options)
           image_title.update_attributes(image.identify.merge(:filename => image.filename))
         end

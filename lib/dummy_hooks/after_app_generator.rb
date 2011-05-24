@@ -11,3 +11,5 @@ gsub_file "config/routes.rb", "resources :posts", %(
 
 gsub_file "app/views/posts/show.html.erb", "<%= @post.title %>", %(
   <%= magick_title_for @post %>)
+
+FileUtils.cp_r File.join(root_path, "test/fonts"), destination_path
