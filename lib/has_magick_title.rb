@@ -18,6 +18,11 @@ module HasMagickTitle
         
         cattr_accessor :magick_title_options
         
+        if attribute.is_a? Hash
+          options   = attribute
+          attribute = :title
+        end
+        
         if options.is_a? Symbol
           self.magick_title_options = MagickTitle.styles[options]
         elsif options.is_a? Hash      
