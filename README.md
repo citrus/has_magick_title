@@ -51,7 +51,32 @@ Testing
 
 Testing for has_magick_title is done with [shoulda](https://github.com/thoughtbot/shoulda), [spork](https://github.com/timcharper/spork) and [dummier](https://github.com/citrus/dummier).
 
+Start by cloning the project:
 
+    git clone git://github.com/citrus/has_magick_title.git
+    cd has_magick_title
+    
+    
+To get your environment setup, just run the following:
+
+    bundle
+    bundle exec dummier
+    
+    
+Now run the unit tests with rake:
+
+    rake
+    
+    
+If you'd like to spork, you probably already know what to do. Otherwise, skip the rake step and run spork instead:
+
+    spork
+    
+
+Now in another window:
+
+    cd /to/where/you/cloned/has_magick_title
+    testdrb test/unit/*.rb
 
 
 License
