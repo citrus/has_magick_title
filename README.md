@@ -20,20 +20,30 @@ To automagically generate your model's title attribute into an image, just call 
 
     # assume the defaults (:attribute => :title)
     class Post < ActiveRecord::Base
-      
-      has_magick_title
-      
+      has_magick_title      
     end
     
 
     # custom attribute and magick_title options
     class Person < ActiveRecord::Base
-      
       has_magick_title :name,
         :color => "#e00053", 
         :font_size => 19
-
     end
+
+    # custom attribute and magick_title style
+    
+    MagickTitle.style :h1 do
+      font_size   50
+      line_height -10
+    end
+        
+    class Person < ActiveRecord::Base
+      has_magick_title :name, :h1
+    end
+
+
+See [magick_title](https://github.com/citrus/magick_title) for more...
 
 
 Testing
