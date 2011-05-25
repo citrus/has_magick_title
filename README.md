@@ -6,7 +6,8 @@ Installation
 
 Since has_magick_title is to be used with rails, we'll install it by adding the following to your Gemfile and running the `bundle` command.
 
-    gem 'has_magick_title', :git => 'git://github.com/citrus/has_magick_title.git'
+    gem 'has_magick_title', '>= 0.1.0'
+    
     
 Now bundle up:
 
