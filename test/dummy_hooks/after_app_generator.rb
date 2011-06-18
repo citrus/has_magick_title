@@ -1,6 +1,3 @@
-prepend_file 'config/application.rb', %(require "rake"
-)
-
 run "rails g scaffold post title:string"
 
 gsub_file "app/models/post.rb", "end", %(
